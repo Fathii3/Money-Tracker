@@ -1,4 +1,4 @@
-# proyek
+Money Tracker
 
 A new Flutter project.
 
