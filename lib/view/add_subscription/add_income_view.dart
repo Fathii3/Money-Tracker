@@ -1,0 +1,632 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:project_moneyTracker_kel2/common/color_extension.dart';
+import 'package:project_moneyTracker_kel2/common_widget/primary_button.dart';
+import 'package:project_moneyTracker_kel2/common_widget/round_textfield.dart';
+import 'package:project_moneyTracker_kel2/common_widget/simple_calculator.dart'; 
+
+
+import '../../common/theme_manager.dart';
+import 'add_subscription_view.dart';
+import 'add_expense_view.dart';
+
+class AddIncomeView extends StatefulWidget {
+  const AddIncomeView({super.key});
+
+  @override
+  State<AddIncomeView> createState() => _AddIncomeViewState();
+}
+
+class _AddIncomeViewState extends State<AddIncomeView> {
+  TextEditingController txtDescription = TextEditingController();
+  TextEditingController txtAmount = TextEditingController();
+
+  
+  DateTime selectDate = DateTime.now();
+  TimeOfDay selectTime = TimeOfDay.now();
+
+  
+  List incomeArr = [
+    {"name": "Gaji", "icon": Icons.monetization_on_rounded},
+    {"name": "Bonus", "icon": Icons.card_giftcard_rounded},
+    {"name": "Investasi", "icon": Icons.trending_up_rounded},
+    {"name": "Paruh Waktu", "icon": Icons.work_history_rounded},
+    {"name": "Sewa", "icon": Icons.home_work_rounded},
+    {"name": "Dividen", "icon": Icons.pie_chart_rounded},
+    {"name": "Lainnya", "icon": Icons.account_balance_wallet_rounded},
+  ];
+
+  
+  String get dateToString {
+    List<String> months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "Mei",
+      "Jun",
+      "Jul",
+      "Agus",
+      "Sep",
+      "Okt",
+      "Nov",
+      "Des"
+    ];
+    int monthIndex = (selectDate.month - 1).clamp(0, 11);
+    return "${selectDate.day} ${months[monthIndex]} ${selectDate.year}";
+  }
+
+  
+  String get timeToString {
+    final hour = selectTime.hour.toString().padLeft(2, '0');
+    final minute = selectTime.minute.toString().padLeft(2, '0');
+    return "$hour:$minute";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var media = MediaQuery.of(context).size;
+
+    
+    return ValueListenableBuilder<bool>(
+        valueListenable: themeNotifier,
+        builder: (context, isDarkMode, child) {
+          
+          var bgColor = isDarkMode ? TColor.gray : Colors.white;
+          var textColor = isDarkMode ? TColor.white : TColor.gray;
+          var subTextColor = isDarkMode ? TColor.gray30 : TColor.gray50;
+          var headerBgColor = isDarkMode
+              ? TColor.gray70.withOpacity(0.5)
+              : TColor.gray10.withOpacity(0.5);
+          var boxColor = isDarkMode
+              ? TColor.gray60.withOpacity(0.2)
+              : Colors.grey.shade100;
+          var borderColor = isDarkMode
+              ? TColor.border.withOpacity(0.1)
+              : Colors.grey.shade300;
+          var inputBgColor = isDarkMode
+              ? TColor.gray60.withOpacity(0.2)
+              : Colors.grey.shade100;
+
+          return Scaffold(
+            backgroundColor: bgColor,
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: headerBgColor,
+                        borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(25),
+                            bottomRight: Radius.circular(25))),
+                    child: SafeArea(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Image.asset("assets/img/back.png",
+                                          width: 25,
+                                          height: 25,
+                                          color: subTextColor))
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Baru",
+                                    style: TextStyle(
+                                        color: subTextColor, fontSize: 16),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+
+                          
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Container(
+                              height: 50,
+                              width: media.width * 0.9,
+                              decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: Row(
+                                children: [
+                                  
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          PageRouteBuilder(
+                                            pageBuilder: (context, animation1,
+                                                    animation2) =>
+                                                const AddSubScriptionView(),
+                                            transitionDuration: Duration.zero,
+                                            reverseTransitionDuration:
+                                                Duration.zero,
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text("Langganan",
+                                            style: TextStyle(
+                                                color: TColor.gray30,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600)),
+                                      ),
+                                    ),
+                                  ),
+
+                                  
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          PageRouteBuilder(
+                                            pageBuilder: (context, animation1,
+                                                    animation2) =>
+                                                const AddExpenseView(),
+                                            transitionDuration: Duration.zero,
+                                            reverseTransitionDuration:
+                                                Duration.zero,
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text("Pengeluaran",
+                                            style: TextStyle(
+                                                color: TColor.gray30,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600)),
+                                      ),
+                                    ),
+                                  ),
+
+                                  
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: TColor.gray70, 
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.black26,
+                                                  blurRadius: 4,
+                                                  offset: Offset(0, 2))
+                                            ]),
+                                        alignment: Alignment.center,
+                                        child: Text("Pemasukan",
+                                            style: TextStyle(
+                                                color:
+                                                    TColor.white, 
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          
+                          Text(
+                            "Tambah\nPemasukan",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: textColor,
+                                fontSize: 40,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(height: 20),
+
+                          
+                          SizedBox(
+                            width: media.width,
+                            height: media.width * 0.6,
+                            child: CarouselSlider.builder(
+                              options: CarouselOptions(
+                                autoPlay: false,
+                                aspectRatio: 1,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll: true,
+                                viewportFraction: 0.65,
+                                enlargeFactor: 0.4,
+                                enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+                              ),
+                              itemCount: incomeArr.length,
+                              itemBuilder: (BuildContext context, int itemIndex,
+                                  int pageViewIndex) {
+                                var sObj = incomeArr[itemIndex] as Map? ?? {};
+
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                      color: boxColor,
+                                      borderRadius: BorderRadius.circular(25),
+                                      border: Border.all(
+                                        color: borderColor,
+                                        width: 1,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 4),
+                                        )
+                                      ]),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        sObj["icon"],
+                                        size: media.width * 0.25,
+                                        color: isDarkMode
+                                            ? TColor.white
+                                            : TColor.secondary,
+                                      ),
+                                      const Spacer(),
+                                      Text(
+                                        sObj["name"],
+                                        style: TextStyle(
+                                            color: textColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: Row(
+                      children: [
+                        
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Tanggal",
+                                style: TextStyle(
+                                    color: subTextColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(height: 8),
+                              InkWell(
+                                onTap: () async {
+                                  DateTime? picked = await showDatePicker(
+                                    context: context,
+                                    initialDate: selectDate,
+                                    firstDate: DateTime(2000), 
+                                    lastDate: DateTime(2100),
+                                    locale: const Locale('id', 'ID'),
+                                    builder: (context, child) {
+                                      return Theme(
+                                        data: isDarkMode
+                                            ? ThemeData.dark().copyWith(
+                                                colorScheme: ColorScheme.dark(
+                                                  primary: TColor.primary,
+                                                  onPrimary: Colors.white,
+                                                  surface: bgColor,
+                                                  onSurface: textColor,
+                                                ),
+                                                dialogBackgroundColor: bgColor,
+                                              )
+                                            : ThemeData.light().copyWith(
+                                                colorScheme: ColorScheme.light(
+                                                  primary: TColor.primary,
+                                                  onPrimary: Colors.white,
+                                                  surface: bgColor,
+                                                  onSurface: textColor,
+                                                ),
+                                                dialogBackgroundColor: bgColor,
+                                              ),
+                                        child: child!,
+                                      );
+                                    },
+                                  );
+                                  if (picked != null && picked != selectDate) {
+                                    setState(() {
+                                      selectDate = picked;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  decoration: BoxDecoration(
+                                    color: inputBgColor,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(color: borderColor),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    dateToString,
+                                    style: TextStyle(
+                                        color: textColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(width: 15),
+
+                        
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Jam",
+                                style: TextStyle(
+                                    color: subTextColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(height: 8),
+                              InkWell(
+                                onTap: () async {
+                                  TimeOfDay? picked = await showTimePicker(
+                                    context: context,
+                                    initialTime: selectTime,
+                                    builder: (context, child) {
+                                      final themeData = isDarkMode
+                                          ? ThemeData.dark().copyWith(
+                                              colorScheme: ColorScheme.dark(
+                                                primary: TColor.primary,
+                                                onPrimary: Colors.white,
+                                                surface: bgColor,
+                                                onSurface: textColor,
+                                              ),
+                                              timePickerTheme:
+                                                  TimePickerThemeData(
+                                                backgroundColor: bgColor,
+                                              ))
+                                          : ThemeData.light().copyWith(
+                                              colorScheme: ColorScheme.light(
+                                                primary: TColor.primary,
+                                                onPrimary: Colors.white,
+                                                surface: bgColor,
+                                                onSurface: textColor,
+                                              ),
+                                              timePickerTheme:
+                                                  TimePickerThemeData(
+                                                backgroundColor: bgColor,
+                                              ));
+                                      return Theme(
+                                        data: themeData,
+                                        child: MediaQuery(
+                                          data: MediaQuery.of(context).copyWith(
+                                              alwaysUse24HourFormat: true),
+                                          child: child!,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  if (picked != null && picked != selectTime) {
+                                    setState(() {
+                                      selectTime = picked;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  decoration: BoxDecoration(
+                                    color: inputBgColor,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(color: borderColor),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    timeToString,
+                                    style: TextStyle(
+                                        color: textColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  
+                  Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Deskripsi",
+                            style: TextStyle(
+                                color: subTextColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            decoration: BoxDecoration(
+                              color: inputBgColor,
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(color: borderColor),
+                            ),
+                            child: TextField(
+                              controller: txtDescription,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: textColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+
+                  
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 40, horizontal: 20),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Nominal",
+                          style: TextStyle(
+                              color: subTextColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            
+                            Expanded(
+                              child: TextField(
+                                controller: txtAmount,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w700),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Rp0",
+                                  hintStyle: TextStyle(
+                                      color: subTextColor,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w700),
+                                  prefixText: "Rp ",
+                                  prefixStyle: TextStyle(
+                                      color: textColor,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+
+                            
+                            IconButton(
+                              onPressed: () {
+                                
+                                showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    
+                                    isScrollControlled: true,
+                                    builder: (context) {
+                                      return SimpleCalculator(
+                                        onDone: (String val) {
+                                          
+                                          setState(() {
+                                            txtAmount.text = val;
+                                          });
+                                        },
+                                      );
+                                    });
+                              },
+                              icon: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                    
+                                    color: isDarkMode
+                                        ? TColor.gray70
+                                        : Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: TColor.border.withOpacity(
+                                            isDarkMode ? 0.2 : 0.1))),
+                                child: Icon(
+                                  Icons.calculate_rounded,
+                                  
+                                  color:
+                                      isDarkMode ? Colors.white : TColor.gray,
+                                  size: 25,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          width: 150,
+                          height: 1,
+                          color: TColor.gray70,
+                        )
+                      ],
+                    ),
+                  ),
+
+                  
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: PrimaryButton(
+                        title: "Tambahkan Pemasukan",
+                        onPressed: () {
+                          
+                        }),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+}

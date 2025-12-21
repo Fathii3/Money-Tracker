@@ -1,0 +1,6 @@
+
+PRODUCT_NAME = money_tracker_kel2
+
+PRODUCT_BUNDLE_IDENTIFIER = com.example.moneyTrackerKel2
+
+PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
